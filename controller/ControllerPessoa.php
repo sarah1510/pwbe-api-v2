@@ -4,6 +4,7 @@ class ControllerPessoa{
 
     private $_method;
     private $_modelPessoa;
+    private $_codPessoa;
 
     //instanciar o controle pessoa
     public function __construct($model){
@@ -11,11 +12,35 @@ class ControllerPessoa{
         $this->_modelPessoa = $model;
         $this->_method = $_SERVER['REQUEST_METHOD'];
 
+        //PERMITE RECEBER DADOS JSON ATRAVÉS DA REQUISIÇÃO
+        $json = file_get_contents("php://input");
+        $dadosPessoa = json_decode($json);
+
+        $this->_codPessoa = $dadosPessoa->cod_pessoa ?? null;
+
     }
 
     function router(){
-        switch ($this->method) {
-            case 'value':
+        switch ($this->_method) {
+            case 'GET':
+
+                if (isset($this->_codPessoa)) {
+                    return $this->_modelPessoa->findById();
+                }
+
+                //o que deve acontecer se quando eu chamar o router e o metodo for get:
+                return $this->_modelPessoa->findAll();
+                break;
+
+            case 'POST':
+                return $this->_modelPessoa->create();
+                break;
+
+            case 'PUT':
+                # code...
+                break; 
+                
+            case 'DELETE':
                 # code...
                 break;
             
