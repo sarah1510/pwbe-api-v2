@@ -1,5 +1,5 @@
 <?php
-
+// controller representada por um class, porque estamos trabalhando com orientação a objeto
 class ControllerPessoa{
 
     private $_method;
@@ -7,6 +7,8 @@ class ControllerPessoa{
     private $_codPessoa;
 
     //instanciar o controle pessoa
+    // __construct -> método construtor, 
+    //ele é executado quando o obeto da classe é criado
     public function __construct($model){
 
         $this->_modelPessoa = $model;
@@ -16,8 +18,11 @@ class ControllerPessoa{
         $json = file_get_contents("php://input");
         $dadosPessoa = json_decode($json);
 
+        //tratamento do cod pessoa, caso ele não tenha nenhum valor, ele irá atribuir um valor nulo
         $this->_codPessoa = $dadosPessoa->cod_pessoa ?? null;
 
+        //$this -> sempre vai referencia ao atributo do escopo da classe
+        //diferencia os atributos dos escopos da classes, das variaveis decaradas
     }
 
     function router(){
@@ -28,6 +33,8 @@ class ControllerPessoa{
                     return $this->_modelPessoa->findById();
                 }
 
+                //get -> enviar dados de uma forma eficiente e rápido
+
                 //o que deve acontecer se quando eu chamar o router e o metodo for get:
                 return $this->_modelPessoa->findAll();
                 break;
@@ -37,11 +44,11 @@ class ControllerPessoa{
                 break;
 
             case 'PUT':
-                # code...
+                return $this->_modelPessoa->update();
                 break; 
                 
             case 'DELETE':
-                # code...
+                return $this->_modelPessoa->delete();
                 break;
             
             default:

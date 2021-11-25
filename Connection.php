@@ -1,4 +1,5 @@
 <?php
+//PDO
 //letra maiuscula porque é uma classe -> igual no java
 
 class Connection{
